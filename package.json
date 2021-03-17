@@ -35,6 +35,8 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^8.2.0",
+    "mongodb": "^3.6.5",
     "validator": "^13.5.2"
   }
 }
