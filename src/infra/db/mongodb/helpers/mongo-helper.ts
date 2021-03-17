@@ -5,6 +5,7 @@ interface MongoHelperTypes {
   connect: (uri: string) => Promise<void>
   disconnect: () => Promise<void>
   getCollection: (name: string) => Collection
+  map: (collection: any) => any
 }
 
 export const MongoHelper: MongoHelperTypes = {
@@ -23,5 +24,10 @@ export const MongoHelper: MongoHelperTypes = {
 
   getCollection (name: string): Collection {
     return this.client.db().collection(name)
+  },
+
+  map (collection: any): any {
+    const { _id, ...collectionWithoutId } = collection
+    return Object.assign({}, collectionWithoutId, { id: _id })
   }
 }
