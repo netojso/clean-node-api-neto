@@ -7,7 +7,7 @@ const makeSut = (): AccountMongoRepository => {
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
-    await MongoHelper.connect('mongodb://127.0.0.1:62137/jest?')
+    await MongoHelper.connect(process.env.MONGO_URL)
   })
 
   afterAll(async () => {
