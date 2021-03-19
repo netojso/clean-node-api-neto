@@ -2,17 +2,20 @@ import { Collection, MongoClient } from 'mongodb'
 
 interface MongoHelperTypes {
   client: MongoClient | null
+  uri: string | null
   connect: (uri: string) => Promise<void>
   disconnect: () => Promise<void>
-  getCollection: (name: string) => Collection
+  getCollection: (name: string) => Promise<Collection>
   map: (collection: any) => any
 }
 
 export const MongoHelper: MongoHelperTypes = {
   client: null,
+  uri: null,
 
   async connect (uri: string): Promise<void> {
-    this.client = await MongoClient.connect(process.env.MONGO_URL, {
+    this.uri = uri
+    this.client = await MongoClient.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
@@ -20,9 +23,13 @@ export const MongoHelper: MongoHelperTypes = {
 
   async disconnect (): Promise<void> {
     await this.client.close()
+    this.client = null
   },
 
-  getCollection (name: string): Collection {
+  async getCollection (name: string): Promise<Collection> {
+    if (!this.client?.isConnected()) {
+      await this.connect(this.uri)
+    }
     return this.client.db().collection(name)
   },
 
