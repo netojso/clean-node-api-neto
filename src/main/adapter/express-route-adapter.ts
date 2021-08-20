@@ -6,8 +6,15 @@ export const adaptRoute = (controller: Controller) => {
     const httpRequest: HttpRequest = {
       body: req.body
     }
+
     const { statusCode, body } = await controller.handle(httpRequest)
 
-    res.status(statusCode).json(body)
+    if (statusCode === 500) {
+      res.status(statusCode).json(body)
+    } else {
+      res.status(statusCode).json({
+        error: body.message
+      })
+    }
   }
 }
