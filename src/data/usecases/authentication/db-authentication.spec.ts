@@ -121,7 +121,7 @@ describe('DbAuthentication UseCase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('should return null if LoadAccountByEmailRepository returns null', async () => {
+  test('should return null if HashComparer returns false', async () => {
     const { sut, hashComparerStub } = makeSut()
     jest.spyOn(hashComparerStub, 'compare')
       .mockReturnValueOnce(new Promise(resolve => resolve(false)))
@@ -141,7 +141,7 @@ describe('DbAuthentication UseCase', () => {
     expect(generateSpy).toHaveBeenCalledWith('any_id')
   })
 
-  test('should throw if LoadAccountByEmailRepository throws', async () => {
+  test('should throw if TokenGenerator throws', async () => {
     const { sut, tokenGeneratorStub } = makeSut()
     jest.spyOn(tokenGeneratorStub, 'generate')
       .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
