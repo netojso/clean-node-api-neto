@@ -3,13 +3,7 @@ import { Validation } from '../../protocols/validation'
 import { Controller, HttpResponse, HttpRequest, AddAccount } from './signup-controller-protocols'
 
 export class SignUpController implements Controller {
-  private readonly validation: Validation
-  private readonly addAccount: AddAccount
-
-  constructor (addAccount: AddAccount, validation: Validation) {
-    this.validation = validation
-    this.addAccount = addAccount
-  }
+  constructor (private readonly addAccount: AddAccount, private readonly validation: Validation) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
