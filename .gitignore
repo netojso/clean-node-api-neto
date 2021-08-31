@@ -4,4 +4,4 @@ coverage
 globalConfig.json
 .env
 data
-!./src/data
+!src/data
