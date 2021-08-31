@@ -1,7 +1,7 @@
 import { MissingParamsError, ServerError } from '../../errors'
 import { AddAccount, AddAccountModel, AccountModel, Validation, Authentication, AuthenticationModel } from './signup-controller-protocols'
 import { SignUpController } from './signup-controller'
-import { badRequest } from '../../helpers/http/http-helper'
+import { badRequest, serverError } from '../../helpers/http/http-helper'
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
@@ -130,6 +130,15 @@ describe('SignUp Controller', () => {
     const authSpy = jest.spyOn(authenticationStub, 'auth')
 
     await sut.handle(makeFakeRequest())
-    expect(authSpy).toHaveBeenCalledWith({ email: 'any_email@mail.com', password: 'any_password' })
+    expect(authSpy).toHaveBeenCalledWith({ email: 'valid_email@mail.com', password: 'any_password' })
+  })
+
+  test('should return 500 if Authentication throw', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth')
+      .mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
