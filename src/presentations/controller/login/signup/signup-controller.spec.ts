@@ -1,7 +1,7 @@
-import { EmailAlreadyExists, MissingParamsError, ServerError } from '../../errors'
+import { EmailAlreadyExists, MissingParamsError, ServerError } from '../../../errors'
 import { AddAccount, AddAccountModel, AccountModel, Validation, Authentication, AuthenticationModel } from './signup-controller-protocols'
 import { SignUpController } from './signup-controller'
-import { badRequest, forbidden, serverError } from '../../helpers/http/http-helper'
+import { badRequest, forbidden, serverError } from '../../../helpers/http/http-helper'
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
