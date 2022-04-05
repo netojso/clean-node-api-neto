@@ -84,5 +84,45 @@ describe('Login Routes', () => {
         .get('/api/surveys')
         .expect(403)
     })
+
+    test('Should return 200 on add survey with valid accessToken', async () => {
+      const account = await accountCollection.insertOne({
+        name: 'Octacilio',
+        email: 'neto.devx@gmail.com',
+        password: '12345',
+        role: 'admin'
+      })
+
+      const id = account.ops[0]._id
+
+      const accessToken = sign({ id }, env.jwtSecret)
+
+      await accountCollection.updateOne({
+        _id: id
+      }, {
+        $set: {
+          accessToken
+        }
+      })
+
+      await surveyCollection.insertMany([
+        {
+          question: 'any_question',
+          answers: [{
+            image: 'any_image',
+            answer: 'any_answer'
+          },
+          {
+            answer: 'any_answer'
+          }],
+          date: new Date()
+        }
+      ])
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', accessToken)
+        .expect(200)
+    })
   })
 })
