@@ -1,6 +1,6 @@
 import { LogErrorRepository } from '../../data/protocols/db/log/log-error-repository'
-import { serverError } from '../../presentations/helpers/http/http-helper'
-import { Controller, HttpRequest, HttpResponse } from '../../presentations/protocols'
+import { serverError } from '../../presentation/helpers/http/http-helper'
+import { Controller, HttpRequest, HttpResponse } from '../../presentation/protocols'
 import { LogControllerDecorator } from './log-controller-decorator'
 
 interface SutTypes {
